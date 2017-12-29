@@ -1,0 +1,210 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="isotope.js"></script>
+
+    <style>
+    #iceBox {
+
+width: 696px;
+}
+
+    .box {
+      height: 172px;
+      width: 340px;
+      float: left;
+      background: #7ac142;
+      margin: 4px;
+      color: white;
+    }
+
+    .box.small {
+      width: 166px;
+    }
+
+    .box.big {
+      height: 352px;
+      background: #455560;
+    }
+
+/* Start: Recommended Isotope styles */
+
+/**** Isotope Filtering ****/
+
+.isotope-item {
+  z-index: 2;
+}
+
+.isotope-hidden.isotope-item {
+  pointer-events: none;
+  z-index: 1;
+}
+
+/**** Isotope CSS3 transitions ****/
+
+.isotope,
+.isotope .isotope-item {
+
+  -webkit-transition-duration: 0.8s;
+     -moz-transition-duration: 0.8s;
+      -ms-transition-duration: 0.8s;
+       -o-transition-duration: 0.8s;
+          transition-duration: 0.8s;
+}
+
+.isotope {
+  -webkit-transition-property: height, width;
+     -moz-transition-property: height, width;
+      -ms-transition-property: height, width;
+       -o-transition-property: height, width;
+          transition-property: height, width;
+}
+
+.isotope .isotope-item {
+  -webkit-transition-property: -webkit-transform, opacity;
+     -moz-transition-property:    -moz-transform, opacity;
+      -ms-transition-property:     -ms-transform, opacity;
+       -o-transition-property:      -o-transform, opacity;
+          transition-property:         transform, opacity;
+}
+
+/**** disabling Isotope CSS3 transitions ****/
+
+.isotope.no-transition,
+.isotope.no-transition .isotope-item,
+.isotope .isotope-item.no-transition {
+  -webkit-transition-duration: 0s;
+     -moz-transition-duration: 0s;
+      -ms-transition-duration: 0s;
+       -o-transition-duration: 0s;
+          transition-duration: 0s;
+}
+
+/* End: Recommended Isotope styles */
+
+
+
+/* disable CSS transitions for containers with infinite scrolling*/
+.isotope.infinite-scrolling {
+  -webkit-transition: none;
+     -moz-transition: none;
+      -ms-transition: none;
+       -o-transition: none;
+          transition: none;
+}
+
+
+    </style>
+
+    <script>
+        $( document ).ready(function() {
+            icebox = $("#iceBox");
+
+   icebox.isotope({
+            masonry: {
+                columnWidth: 174
+              },
+           getSortData : {
+            sort : function ( $elem ) {
+              return parseInt($elem.attr('data-sort'));
+            }
+        }
+        });
+
+        makeTwoSmall();
+
+
+
+
+    $("button").click(function(){
+        $("#iceBox .box").removeClass('small');
+
+        numba = getRandomInt(0,3);
+
+        swapSorts($("#iceBox .big"), $("#iceBox .box[data-sort='" + numba + "']"));
+
+        makeTwoSmall();
+
+
+
+    });
+});
+
+function makeTwoSmall() {
+    small_spot = findSmallSpot();
+    $("#iceBox .box[data-sort='" + small_spot + "']").addClass('small');
+    $("#iceBox .box[data-sort='" + (small_spot + 1) + "']").addClass('small');
+    icebox.isotope('reLayout');
+}
+
+function swapSorts(ob1, ob2) {
+
+    first_sort = ob1.attr('data-sort');
+    second_sort = ob2.attr('data-sort');
+
+    ob1.attr('data-sort', second_sort);
+    ob2.attr('data-sort', first_sort);
+
+    icebox.isotope('updateSortData', ob1);
+    icebox.isotope('updateSortData', ob2);
+
+    icebox.isotope({ sortBy : 'sort' });
+
+}
+
+function findSmallSpot() {
+    var big_pos = $("#iceBox .box.big").attr('data-sort');
+    var grid_length = $("#iceBox .box").length - 1;
+    var random_index = 0;
+    do {
+        random_index = getRandomInt(0, grid_length);
+    } while (random_index == big_pos || random_index == big_pos - 1 || random_index == grid_length)
+
+    console.log(random_index);
+
+    return random_index;
+}
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+    </script>
+</head>
+<body>
+    <div id="bgroup">
+    <button>Shuffle</button>
+</div>
+<div id="iceBox" class="activeIce" style="">
+
+    <div class="box big" data-sort="0">
+
+    </div>
+
+    <div class="box" data-sort="1">
+
+    </div>
+
+    <div class="box" data-sort="2">
+
+    </div>
+
+    <div class="box" data-sort="3">
+
+    </div>
+
+    <div class="box" data-sort="4">
+
+    </div>
+
+    <div class="box" data-sort="5">
+
+    </div>
+
+</div>
+</body>
+</html>
